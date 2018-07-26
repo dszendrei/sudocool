@@ -215,7 +215,8 @@ def userInput(TrOrFa):
             try:
                 userInputy = int(userInputy_str)
             except ValueError:
-                print("please enter a number between 1 and 9")
+                pass
+            #    print("please enter a number between 1 and 9")
             if userInputy < 10 and userInputy > 0:
                 userInputyOK = True
             else:
@@ -226,7 +227,8 @@ def userInput(TrOrFa):
             try:
                 userInputx = int(userInputx_str)
             except ValueError:
-                print("please enter a number between 1 and 9")
+                pass
+            #    print("please enter a number between 1 and 9")
             if userInputx < 10 and userInputx > 0:
                 userInputxOK = True
             else:
@@ -237,7 +239,8 @@ def userInput(TrOrFa):
             try:
                 userInputn = int(userInputn_str)
             except ValueError:
-                print("please enter a number between 1 and 9")
+                pass
+            #    print("please enter a number between 1 and 9")
             if userInputn < 10 and userInputn > 0:
                 userInputnOK = True
             else:
