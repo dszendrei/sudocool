@@ -142,6 +142,97 @@ table = {
     'x8y9': 5,
     'x9y9': 4}
 
+table = {
+    'x1y1': 1, 'x2y1': 7, 'x3y1': 4, 'x4y1': 6, 'x5y1': 2, 'x6y1': 8, 'x7y1': 5, 'x8y1': 3, 'x9y1': 9,
+    'x1y2': 3, 'x2y2': 5, 'x3y2': 9, 'x4y2': 7, 'x5y2': 1, 'x6y2': 4, 'x7y2': 2, 'x8y2': 8, 'x9y2': 6,
+    'x1y3': 8, 'x2y3': 2, 'x3y3': 6, 'x4y3': 5, 'x5y3': 3, 'x6y3': 9, 'x7y3': 4, 'x8y3': 7, 'x9y3': 1,
+    'x1y4': 4, 'x2y4': 1, 'x3y4': 8, 'x4y4': 3, 'x5y4': 6, 'x6y4': 7, 'x7y4': 9, 'x8y4': 5, 'x9y4': 2,
+    'x1y5': 2, 'x2y5': 6, 'x3y5': 7, 'x4y5': 1, 'x5y5': 9, 'x6y5': 5, 'x7y5': 3, 'x8y5': 4, 'x9y5': 8,
+    'x1y6': 9, 'x2y6': 3, 'x3y6': 5, 'x4y6': 4, 'x5y6': 8, 'x6y6': 2, 'x7y6': 1, 'x8y6': 6, 'x9y6': 7,
+    'x1y7': 5, 'x2y7': 9, 'x3y7': 1, 'x4y7': 8, 'x5y7': 4, 'x6y7': 6, 'x7y7': 7, 'x8y7': 2, 'x9y7': 3,
+    'x1y8': 6, 'x2y8': 4, 'x3y8': 3, 'x4y8': 2, 'x5y8': 7, 'x6y8': 1, 'x7y8': 8, 'x8y8': 9, 'x9y8': 5,
+    'x1y9': 7, 'x2y9': 8, 'x3y9': 2, 'x4y9': 9, 'x5y9': 5, 'x6y9': 3, 'x7y9': 6, 'x8y9': 1, 'x9y9': 4}
+
+
+def randomize():
+    i = 1
+    while i < 1001:
+        block_row = random.randint(1, 3)
+        block_column = random.randint(1, 3)
+        if block_row == 1:
+            row = random.randint(2, 3)
+            block_row_multiplier = 0
+        elif block_row == 2:
+            row = random.randint(5, 6)
+            block_row_multiplier = 1
+        else:
+            row = random.randint(8, 9)
+            block_row_multiplier = 2
+
+        if block_column == 1:
+            column = random.randint(2, 3)
+            block_column_multiplier = 0
+        elif block_column == 2:
+            column = random.randint(5, 6)
+            block_column_multiplier = 1
+        else:
+            column = random.randint(8, 9)
+            block_column_multiplier = 2
+        row_changing(block_row, block_row_multiplier, row)
+        column_changing(block_column, block_column_multiplier, column)
+        i += 1
+
+
+def row_changing(block_row, block_row_multiplier, row):
+    reserve_1 = []
+    reserve_2 = []
+    for x_coor in range(1, 10):
+        x_str = str(x_coor)
+        y_str = str(block_row + 3 * block_row_multiplier)
+        y_str_moving = str(row)
+        block_row_key = 'x' + x_str + 'y' + y_str
+        moving_key = 'x' + x_str + 'y' + y_str_moving
+        reserve_1.append(table[block_row_key])
+        reserve_2.append(table[moving_key])
+
+    for x_coor in range(1, 10):
+        x_str = str(x_coor)
+        y_str = str(block_row + 3 * block_row_multiplier)
+        block_row_key = 'x' + x_str + 'y' + y_str
+        table[block_row_key] = reserve_2[x_coor-1]
+    reserve_2 = []
+    for x_coor in range(1, 10):
+        x_str = str(x_coor)
+        y_str_moving = str(row)
+        moving_key = 'x' + x_str + 'y' + y_str_moving
+        table[moving_key] = reserve_1[x_coor-1]
+    reserve_1 = []
+
+
+def column_changing(block_column, block_column_multiplier, column):
+    reserve_1 = []
+    reserve_2 = []
+    for y_coor in range(1, 10):
+        y_str = str(y_coor)
+        x_str = str(block_column + 3 * block_column_multiplier)
+        x_str_moving = str(column)
+        block_column_key = 'x' + x_str + 'y' + y_str
+        moving_key = 'x' + x_str_moving + 'y' + y_str
+        reserve_1.append(table[block_column_key])
+        reserve_2.append(table[moving_key])
+
+    for y_coor in range(1, 10):
+        y_str = str(y_coor)
+        x_str = str(block_column + 3 * block_column_multiplier)
+        block_column_key = 'x' + x_str + 'y' + y_str
+        table[block_column_key] = reserve_2[y_coor-1]
+
+    for y_coor in range(1, 10):
+        y_str = str(y_coor)
+        x_str_moving = str(column)
+        moving_key = 'x' + x_str_moving + 'y' + y_str
+        table[moving_key] = reserve_1[y_coor-1]
+
 
 def check_num(coord_x, coord_y):
     coord = "x" + str(coord_x) + "y" + str(coord_y)
@@ -214,20 +305,17 @@ def game_generator():
         # printTable()
 
 
-game_generator()
-
 # empty
 table_E = {}
 
-empty = False
-for i in table:
-    try:
-        empty = int(table[i])
-        empty = True
-        table_E[i] = empty
-    except BaseException:
-        empty = False
-        table_E[i] = empty
+
+def sign_empty():
+    for i in table:
+        try:
+            int(table[i])
+            table_E[i] = True
+        except BaseException:
+            table_E[i] = False
 
 
 # colour
@@ -245,10 +333,7 @@ def coloring():
             table_C[i] = Color_fix + str(table[i]) + Color_added + ""
 
 
-coloring()
-
 # print
-
 
 def printTable():
     print(u"\u250F\u2501\u2501\u2501\u252F\u2501\u2501\u2501\u252F\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u252F\u2501\u2501\u2501\u252F\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u252F\u2501\u2501\u2501\u252F\u2501\u2501\u2501\u2513")
@@ -442,9 +527,6 @@ def printTable():
         u"\u2503")
     print(u"\u2517\u2501\u2501\u2501\u2537\u2501\u2501\u2501\u2537\u2501\u2501\u2501\u253B\u2501\u2501\u2501\u2537\u2501\u2501\u2501\u2537\u2501\u2501\u2501\u253B\u2501\u2501\u2501\u2537\u2501\u2501\u2501\u2537\u2501\u2501\u2501\u251B")
 
-
-printTable()
-
 # user input
 
 
@@ -498,6 +580,7 @@ def userInput(TrOrFa):
     else:
         while not userInputmOK:
             userInputm = input("Do you want to modify a cell? y/n ")
+            os.system('cls||clear')
             printTable()
             if userInputm == "y":
                 userInput(False)
@@ -662,10 +745,16 @@ def checking():
 
 
 # actual program
+randomize()
+game_generator()
+sign_empty()
+coloring()
+printTable()
 while not tableIsFull:
     checkingIfFull()
     tableIsFull = checkingIfFull()
     tableIsFull = userInput(tableIsFull)
+    os.system('cls||clear')
     coloring()
     printTable()
     if tableIsFull is True:
