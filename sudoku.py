@@ -1,4 +1,3 @@
-
 import random
 import os
 
@@ -59,7 +58,7 @@ table['x5y9'] = 9
 table['x6y9'] = 4'''
 
 # table test
-table = {
+'''table = {
     'x1y1': 7,
     'x2y1': 5,
     'x3y1': 4,
@@ -140,9 +139,9 @@ table = {
     'x6y9': 7,
     'x7y9': 9,
     'x8y9': 5,
-    'x9y9': 4}
+    'x9y9': 4}'''
 
-table = {
+'''table = {
     'x1y1': 1, 'x2y1': 7, 'x3y1': 4, 'x4y1': 6, 'x5y1': 2, 'x6y1': 8, 'x7y1': 5, 'x8y1': 3, 'x9y1': 9,
     'x1y2': 3, 'x2y2': 5, 'x3y2': 9, 'x4y2': 7, 'x5y2': 1, 'x6y2': 4, 'x7y2': 2, 'x8y2': 8, 'x9y2': 6,
     'x1y3': 8, 'x2y3': 2, 'x3y3': 6, 'x4y3': 5, 'x5y3': 3, 'x6y3': 9, 'x7y3': 4, 'x8y3': 7, 'x9y3': 1,
@@ -152,6 +151,103 @@ table = {
     'x1y7': 5, 'x2y7': 9, 'x3y7': 1, 'x4y7': 8, 'x5y7': 4, 'x6y7': 6, 'x7y7': 7, 'x8y7': 2, 'x9y7': 3,
     'x1y8': 6, 'x2y8': 4, 'x3y8': 3, 'x4y8': 2, 'x5y8': 7, 'x6y8': 1, 'x7y8': 8, 'x8y8': 9, 'x9y8': 5,
     'x1y9': 7, 'x2y9': 8, 'x3y9': 2, 'x4y9': 9, 'x5y9': 5, 'x6y9': 3, 'x7y9': 6, 'x8y9': 1, 'x9y9': 4}
+'''
+
+
+def cell_value_checking(key):
+    try:
+        int(table[key])
+        if table[key] < 9:
+            return True
+        else:
+            return False
+    except ValueError:
+        table[key] = 0
+        return True
+
+
+def number_checking(key, x_coor, y_coor):
+    table[key] += 1
+    row = 1
+    while row < 10:
+        checking_key = 'x' + str(x_coor) + 'y' + str(row)
+        if key == checking_key:
+            row += 1
+        elif table[key] == table[checking_key]:
+            return False
+        else:
+            row += 1
+        column = 1
+        while column < 10:
+            checking_key = 'x' + str(column) + 'y' + str(y_coor)
+            if key == checking_key:
+                column += 1
+            elif table[key] == table[checking_key]:
+                return False
+            else:
+                column += 1
+    return block_checking(key, x_coor, y_coor)
+
+
+def block_checking(key, x_coor, y_coor):
+    check_list = []
+    if x_coor < 4:
+        block_column_multiplier = 0
+    elif x_coor < 7:
+        block_column_multiplier = 1
+    else:
+        block_column_multiplier = 2
+    if y_coor < 4:
+        block_row_multiplier = 0
+    elif y_coor < 7:
+        block_row_multiplier = 1
+    else:
+        block_row_multiplier = 2
+    y_coor_block = 1 + 3 * block_row_multiplier
+    while y_coor_block < 4 + 3 * block_row_multiplier:
+        x_coor_block = 1 + 3 * block_column_multiplier
+        while x_coor_block < 4 + 3 * block_column_multiplier:
+            checking_key = 'x' + str(x_coor_block) + 'y' + str(y_coor_block)
+            if checking_key == key:
+                x_coor_block += 1
+            else:
+                check_list.append(table[checking_key])
+                x_coor_block += 1
+        y_coor_block += 1
+    for i in range(8):
+        if table[key] == check_list[i]:
+            return False
+    return True
+
+
+def table_generator():
+    key = ' '
+    first_row = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    random.shuffle(first_row)
+    for x_coor in range(1, 10):
+        key = 'x' + str(x_coor) + 'y1'
+        table[key] = first_row[x_coor-1]
+    n = 0
+    while n < 72:
+        y_coor = 2
+        while y_coor < 10:
+            x_coor = 1
+            while x_coor < 10:
+                key = 'x' + str(x_coor) + 'y' + str(y_coor)
+                if cell_value_checking(key):
+                    if number_checking(key, x_coor, y_coor):
+                        n += 1
+                        x_coor += 1
+                else:
+                    table[key] = ' '
+                    if x_coor > 1:
+                        x_coor -= 1
+                    else:
+                        x_coor = 9
+                        y_coor -= 1
+                    n -= 1
+            y_coor += 1
+        n += 1
 
 
 def randomize():
@@ -745,6 +841,7 @@ def checking():
 
 
 # actual program
+table_generator()
 randomize()
 game_generator()
 sign_empty()
