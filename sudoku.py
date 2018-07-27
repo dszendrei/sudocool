@@ -398,7 +398,7 @@ def game_generator():
             no_more_to_delete = True
         if n == 79:
             break
-        # printTable()
+        #printTable()
 
 
 # empty
