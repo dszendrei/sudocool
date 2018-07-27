@@ -81,7 +81,7 @@ def check_num(coord_x, coord_y):
         print('False')
         return False
     print(solutions)
-    '''
+    
     if coord[0] <4 and coord[1] < 4:
         check_list = [table['x1y1'], table['x2y1'], table['x3y1'], table['x1y2'], table['x2y2'], table['x3y2'], table['x1y3'], table['x2y3'], table['x3y3']]
         ii = 1
@@ -101,7 +101,7 @@ def check_num(coord_x, coord_y):
                     insertSuccess = False
                 else:
                     insertSuccess = True
-    '''                      
+                         
     return insertSuccess
 
 def check_solvability(coord_x, coord_y):
